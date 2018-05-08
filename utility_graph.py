@@ -1,0 +1,111 @@
+"""
+Graph utility module for Week 2 of Algorithmic Thinking.
+"""
+
+EX_GRAPH0 = {
+    0: set([1, 2]),
+    1: set([]),
+    2: set([])
+}
+
+EX_GRAPH1 = {
+    0: set([1, 4, 5]),
+    1: set([2, 6]),
+    2: set([3]),
+    3: set([0]),
+    4: set([1]),
+    5: set([2]),
+    6: set([])
+}
+
+EX_GRAPH2 = {
+    0: set([1, 4, 5]),
+    1: set([2, 6]),
+    2: set([3, 7]),
+    3: set([7]),
+    4: set([1]),
+    5: set([2]),
+    6: set([]),
+    7: set([3]),
+    8: set([1, 2]),
+    9: set([0, 3, 4, 5, 6, 7])
+}
+
+
+def make_complete_graph(num_nodes):
+    """
+    Returns a dictionary corresponding to a complete directed graph with the
+    specified number of nodes.
+    A "complete graph" contains all possible edges subject to the restriction that
+    self-loops are not allowed.
+    The nodes of the graph should be numbered 0 to num_nodes - 1 when num_nodes
+    is positive.
+    Otherwise, returns a dictionary corresponding to the empty graph.
+    """
+    if num_nodes <= 0:
+        return {}
+
+    if num_nodes == 1:
+        return {0: set([])}
+
+    graph = {}
+    elements = [idx for idx in xrange(num_nodes)]
+    for node_i in xrange(num_nodes):
+        graph[node_i] = set(elements[0:node_i] + elements[node_i + 1:])
+
+    return graph
+
+
+def compute_out_degrees(digraph):
+    """
+    Takes a directed graph (represented as a dictionary) and computes the
+    out-degrees for the nodes in the graph.
+    Returns a dictionary with the same keys as the graph parameter whose
+    corresponding values are the number of edges whose tail matches a
+    particular node.
+    """
+    out_degrees_by_node = {}
+    for node in digraph:
+        out_degrees_by_node[node] = len(digraph[node])
+    return out_degrees_by_node
+
+
+def compute_in_degrees(digraph):
+    """
+    Takes a directed graph (represented as a dictionary) and computes the
+    in-degrees for the nodes in the graph.
+    Returns a dictionary with the same keys as the graph parameter whose
+    corresponding values are the number of edges whose head matches a
+    particular node.
+    """
+    in_degrees_by_node = {}
+
+    for node in digraph:
+        if not node in in_degrees_by_node:
+            in_degrees_by_node[node] = 0
+        for head in digraph[node]:
+            in_degrees_by_node[head] = in_degrees_by_node.get(head, 0) + 1
+    return in_degrees_by_node
+
+
+def in_degree_distribution(digraph):
+    """
+    Takes a directed graph (represented as a dictionary) and computes the 
+    unnormalized distribution of the in-degrees of the graph.
+    Returns a dictionary whose keys correspond to in-degrees of nodes in the
+    graph. The value associated with each key is the number of nodes with that
+    in-degree.
+    In-degrees with no corresponding nodes in the graph are not included in
+    the dictionary.
+    """
+    distribution_dict = dict()
+    in_degrees_dict = compute_in_degrees(digraph)
+    for key in in_degrees_dict:
+        distribution_dict[in_degrees_dict[key]] = distribution_dict.get(
+            in_degrees_dict[key], 0) + 1
+
+    return distribution_dict
+
+
+print(in_degree_distribution(
+    {0: set([]), 1: set([0]), 2: set([0]), 3: set([0]), 4: set([0])}))
