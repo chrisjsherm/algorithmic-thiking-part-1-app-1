@@ -107,5 +107,18 @@ def in_degree_distribution(digraph):
     return distribution_dict
 
 
-print(in_degree_distribution(
-    {0: set([]), 1: set([0]), 2: set([0]), 3: set([0]), 4: set([0])}))
+def normalize_distribution(distribution_dict):
+    """
+    Takes a distribution of in degrees (represented as a dictionary) and
+    computes the normalized distribution (make the values in the dictionary
+    sum to one).
+    """
+    normalized_distribution_dict = {}
+    denominator = 0.0
+    for key in distribution_dict:
+        denominator += distribution_dict[key]
+        normalized_distribution_dict[key] = \
+            lambda x=distribution_dict[key]: x / denominator
+
+    return {edge_count: normalized_distribution_dict[edge_count]()
+            for edge_count in normalized_distribution_dict}

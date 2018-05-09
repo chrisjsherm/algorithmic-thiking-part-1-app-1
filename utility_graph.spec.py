@@ -55,6 +55,14 @@ class TestUtilityGraph(unittest.TestCase):
             {0: set([]), 1: set([0]), 2: set([0]), 3: set([0]), 4: set([0])}),
             {0: 4, 4: 1})
 
+    def test_normalize_distribution(self):
+        """
+        Test normalize_distribution(distribution_dict).
+        """
+        self.assertEqual(utility_graph.normalize_distribution(
+            {0: 4, 4: 1}),
+            {0: 0.8, 4: 0.2}
+        )
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestUtilityGraph)
 unittest.TextTestRunner(verbosity=2).run(suite)
