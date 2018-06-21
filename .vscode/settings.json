@@ -1,12 +1,3 @@
 {
-  // When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
-  "editor.detectIndentation": false,
-
-    // Configure editor settings to be overridden for [yaml] language.
-    "[python]": {
-      "editor.insertSpaces": true,
-      "editor.tabSize": 4,
-      "editor.autoIndent": true
-    },
-    "python.pythonPath": "C:\\Users\\Chris\\.windows-build-tools\\python27\\python.exe"
-  }
+  "python.linting.pylintEnabled": false
+}

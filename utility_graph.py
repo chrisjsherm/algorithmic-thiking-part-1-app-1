@@ -2,6 +2,9 @@
 Graph utility module for Week 2 of Algorithmic Thinking.
 """
 
+import matplotlib.pyplot as plt
+import numpy
+
 EX_GRAPH0 = {
     0: set([1, 2]),
     1: set([]),
@@ -107,6 +110,41 @@ def in_degree_distribution(digraph):
     return distribution_dict
 
 
+def out_degree_distribution(digraph):
+    """
+    Takes a directed graph (represented as a dictionary) and computes the 
+    unnormalized distribution of the out-degrees of the graph.
+    Returns a dictionary whose keys correspond to out-degrees of nodes in the
+    graph. The value associated with each key is the number of nodes with that
+    out-degree.
+    Out-degrees with no corresponding nodes in the graph are not included in
+    the dictionary.
+    """
+    distribution_dict = dict()
+    out_degrees_dict = compute_out_degrees(digraph)
+    for key in out_degrees_dict:
+        distribution_dict[out_degrees_dict[key]] = distribution_dict.get(
+            out_degrees_dict[key], 0) + 1
+
+    return distribution_dict
+
+
+def average_out_degree(digraph):
+    """
+    Takes a directed graph (respresented as a dictionary) and computes the
+    average out degree of nodes in the graph.
+    """
+    sum_out_degrees = 0.0
+
+    if len(digraph) == 0:
+        return sum_out_degrees
+
+    for key, value in digraph.items():
+        sum_out_degrees += len(value)
+
+    return sum_out_degrees / len(digraph)
+
+
 def normalize_distribution(distribution_dict):
     """
     Takes a distribution of in degrees (represented as a dictionary) and
@@ -122,3 +160,16 @@ def normalize_distribution(distribution_dict):
 
     return {edge_count: normalized_distribution_dict[edge_count]()
             for edge_count in normalized_distribution_dict}
+
+
+def plot_log_log_scatter(normalized_dist_dict, title, x_axis_label, y_axis_label):
+    """
+    Use matplotlib to create a log/log scatter plot.
+    """
+    plt.scatter(numpy.log10(normalized_dist_dict.keys()),
+                numpy.log10(normalized_dist_dict.values()))
+    plt.title(title)
+    plt.xlabel(x_axis_label)
+    plt.ylabel(y_axis_label)
+
+    plt.show()

@@ -55,6 +55,29 @@ class TestUtilityGraph(unittest.TestCase):
             {0: set([]), 1: set([0]), 2: set([0]), 3: set([0]), 4: set([0])}),
             {0: 4, 4: 1})
 
+    def test_out_degree_distribution(self):
+        """
+        Test out_degree_distribution(digraph).
+        """
+        self.assertEqual(utility_graph.out_degree_distribution({0: [1], 1: []}),
+                         {0: 1, 1: 1})
+        self.assertEqual(utility_graph.out_degree_distribution(
+            {0: [1, 3], 1: [2], 2: [0], 3: []}),
+            {0: 1, 1: 2, 2: 1})
+        self.assertEqual(utility_graph.out_degree_distribution(
+            {0: set([]), 1: set([0]), 2: set([0]), 3: set([0]), 4: set([0])}),
+            {0: 1, 1: 4})
+
+    def test_average_out_degree(self):
+        """
+        Test average_out_degree(digraph).
+        """
+        self.assertEqual(utility_graph.average_out_degree({0: [1], 1: []}),
+                         0.5)
+
+        self.assertEqual(utility_graph.average_out_degree({0: [1, 3], 1: [2], 2: [0], 3: []}),
+                         1.0)
+
     def test_normalize_distribution(self):
         """
         Test normalize_distribution(distribution_dict).
@@ -63,6 +86,7 @@ class TestUtilityGraph(unittest.TestCase):
             {0: 4, 4: 1}),
             {0: 0.8, 4: 0.2}
         )
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestUtilityGraph)
 unittest.TextTestRunner(verbosity=2).run(suite)
